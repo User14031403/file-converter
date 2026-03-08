@@ -56,7 +56,10 @@ export const conversionRouter = router({
     .input(
       z.object({
         fileName: z.string().min(1),
-        fileBuffer: z.instanceof(Buffer),
+        fileBuffer: z.union([
+          z.instanceof(Buffer),
+          z.instanceof(Uint8Array),
+        ]),
         outputFormat: z.string().min(1),
       })
     )
@@ -101,10 +104,15 @@ export const conversionRouter = router({
         }
 
         try {
+          // Convert Uint8Array to Buffer if needed
+          const bufferToConvert = Buffer.isBuffer(fileBuffer)
+            ? fileBuffer
+            : Buffer.from(fileBuffer);
+
           // Perform conversion
           const startTime = Date.now();
           const convertedBuffer = await convertFile(
-            fileBuffer,
+            bufferToConvert,
             fileType,
             inputFormat,
             outputFormat,

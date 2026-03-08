@@ -48,7 +48,13 @@
 - [x] Converter pipeline tests (9 tests passing)
 - [x] All 21 tests passing
 
+## Bug Fixes
+- [x] Fixed Buffer is not defined error by using Uint8Array in frontend
+- [x] Updated backend to accept both Buffer and Uint8Array
+- [x] All 21 tests still passing
+
 ## Deployment
 - [x] Final testing and QA
 - [x] Checkpoint creation
 - [x] Delivery to user
+- [x] Buffer compatibility fix

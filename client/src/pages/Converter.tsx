@@ -160,19 +160,18 @@ export default function Converter() {
       );
 
       try {
-        // Read file as buffer
+        // Read file as array buffer
         const arrayBuffer = await file.file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
 
         // Simulate initial progress
         setFiles((prev) =>
           prev.map((f) => (f.id === file.id ? { ...f, progress: 25 } : f))
         );
 
-        // Call backend API
+        // Call backend API with Uint8Array
         const result = await convertMutation.mutateAsync({
           fileName: file.file.name,
-          fileBuffer: buffer,
+          fileBuffer: new Uint8Array(arrayBuffer),
           outputFormat: outputFormat,
         });
 
