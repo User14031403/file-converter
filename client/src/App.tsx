@@ -6,7 +6,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Converter from "./pages/Converter";
-import History from "./pages/History";
 import Header from "./components/Header";
 
 function Router() {
@@ -14,7 +13,6 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/converter"} component={Converter} />
-      <Route path={"/history"} component={History} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

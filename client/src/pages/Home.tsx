@@ -1,4 +1,3 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
@@ -14,7 +13,6 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  const { user } = useAuth();
   const [, navigate] = useLocation();
 
   const features = [
@@ -91,15 +89,6 @@ export default function Home() {
                 Start Converting
                 <ArrowRight className="w-5 h-5" />
               </Button>
-              {!user && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => navigate("/converter")}
-                >
-                  Try Now
-                </Button>
-              )}
             </div>
 
             {/* Quick Stats */}

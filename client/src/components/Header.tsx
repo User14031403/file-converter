@@ -1,11 +1,7 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { FileText, Download, History, LogOut } from "lucide-react";
-import { getLoginUrl } from "@/const";
+import { FileText } from "lucide-react";
 
 export default function Header() {
-  const { user, logout } = useAuth();
   const [location, navigate] = useLocation();
 
   const isActive = (path: string) => location === path;
@@ -46,52 +42,10 @@ export default function Header() {
           >
             Converter
           </button>
-          {user && (
-            <button
-              onClick={() => navigate("/history")}
-              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                isActive("/history")
-                  ? "bg-accent text-accent-foreground"
-                  : "text-foreground hover:bg-muted"
-              }`}
-            >
-              <History className="w-4 h-4" />
-              History
-            </button>
-          )}
+        
         </nav>
 
-        {/* Auth Actions */}
-        <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <div className="hidden sm:flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-                  <span className="text-xs font-semibold text-accent">
-                    {user.name?.charAt(0).toUpperCase() || "U"}
-                  </span>
-                </div>
-                <span className="text-sm text-foreground">{user.name}</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => logout()}
-                className="gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Logout</span>
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={() => (window.location.href = getLoginUrl())}
-              className="gap-2"
-            >
-              <span>Sign In</span>
-            </Button>
-          )}
-        </div>
+
       </div>
     </header>
   );

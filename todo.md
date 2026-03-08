@@ -53,8 +53,15 @@
 - [x] Updated backend to accept both Buffer and Uint8Array
 - [x] All 21 tests still passing
 
+## UI Updates
+- [x] Removed Sign In button from header
+- [x] Removed History section and navigation
+- [x] Removed Try Now button from home page
+- [x] Made converter fully public and accessible without authentication
+
 ## Deployment
 - [x] Final testing and QA
 - [x] Checkpoint creation
 - [x] Delivery to user
 - [x] Buffer compatibility fix
+- [x] Public converter UI updates
