@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, conversions, Conversion, InsertConversion } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,74 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function createConversion(conversion: InsertConversion): Promise<Conversion> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.insert(conversions).values(conversion);
+  
+  // Get the most recently created conversion for this user
+  const created = await db
+    .select()
+    .from(conversions)
+    .where(eq(conversions.userId, conversion.userId))
+    .orderBy((c) => c.createdAt)
+    .limit(1);
+
+  if (!created[0]) {
+    throw new Error("Failed to create conversion");
+  }
+
+  return created[0];
+}
+
+export async function getConversionById(id: number): Promise<Conversion | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db
+    .select()
+    .from(conversions)
+    .where(eq(conversions.id, id))
+    .limit(1);
+
+  return result[0];
+}
+
+export async function getUserConversions(userId: number, limit = 50): Promise<Conversion[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  return db
+    .select()
+    .from(conversions)
+    .where(eq(conversions.userId, userId))
+    .orderBy((c) => c.createdAt)
+    .limit(limit);
+}
+
+export async function updateConversionStatus(
+  id: number,
+  status: string,
+  data?: Partial<InsertConversion>
+): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+
+  await db
+    .update(conversions)
+    .set({
+      status: status as any,
+      ...data,
+    })
+    .where(eq(conversions.id, id));
+}
+
+export async function deleteConversion(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.delete(conversions).where(eq(conversions.id, id));
+}

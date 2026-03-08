@@ -25,4 +25,23 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+export const conversions = mysqlTable("conversions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  originalFileName: varchar("originalFileName", { length: 255 }).notNull(),
+  originalFormat: varchar("originalFormat", { length: 32 }).notNull(),
+  outputFormat: varchar("outputFormat", { length: 32 }).notNull(),
+  fileType: varchar("fileType", { length: 32 }).notNull(),
+  originalFileSize: int("originalFileSize").notNull(),
+  convertedFileSize: int("convertedFileSize"),
+  originalFileUrl: text("originalFileUrl"),
+  convertedFileUrl: text("convertedFileUrl"),
+  status: mysqlEnum("status", ["pending", "processing", "completed", "failed"]).default("pending").notNull(),
+  errorMessage: text("errorMessage"),
+  processingTimeMs: int("processingTimeMs"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Conversion = typeof conversions.$inferSelect;
+export type InsertConversion = typeof conversions.$inferInsert;
