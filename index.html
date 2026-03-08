@@ -280,25 +280,7 @@
 
         /* CTA Section */
         .cta {
-            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 102, 255, 0.05));
-            border: 1px solid rgba(0, 102, 255, 0.2);
-            border-radius: 24px;
-            padding: 64px 32px;
-            text-align: center;
-            margin: 80px 0;
-        }
-
-        .cta h2 {
-            font-size: 40px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .cta p {
-            font-size: 18px;
-            color: var(--muted-foreground);
-            max-width: 600px;
-            margin: 0 auto 32px;
+            display: none;
         }
 
         /* Converter Section */
@@ -357,8 +339,15 @@
             padding: 16px;
             margin-bottom: 12px;
             display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-item-header {
+            display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
 
         .file-info {
@@ -373,6 +362,12 @@
         .file-size {
             font-size: 12px;
             color: var(--muted-foreground);
+        }
+
+        .file-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         .format-select {
@@ -394,7 +389,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
-            margin-left: 12px;
+            white-space: nowrap;
         }
 
         .convert-btn:hover {
@@ -407,6 +402,37 @@
             color: var(--muted-foreground);
             cursor: not-allowed;
             transform: none;
+        }
+
+        .converted-file {
+            background: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+
+        .converted-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .converted-file-info {
+            flex: 1;
+        }
+
+        .converted-file-name {
+            font-weight: 500;
+            color: var(--foreground);
+            margin-bottom: 4px;
+        }
+
+        .converted-file-status {
+            font-size: 12px;
+            color: #22c55e;
         }
 
         .progress-bar {
@@ -839,19 +865,24 @@
 
                 return `
                     <div class="file-item">
-                        <div class="file-info">
-                            <div class="file-name">${file.name}</div>
-                            <div class="file-size">${sizeInMB} MB</div>
+                        <div class="file-item-header">
+                            <div class="file-info">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${sizeInMB} MB</div>
+                            </div>
+                            <div class="file-controls">
+                                <select class="format-select" id="format-${index}">
+                                    ${availableFormats.length > 0 
+                                        ? availableFormats.map(fmt => `<option value="${fmt}">Convert to ${fmt.toUpperCase()}</option>`).join('')
+                                        : '<option disabled>No formats available</option>'
+                                    }
+                                </select>
+                                <button class="convert-btn" onclick="convertFile(${index})" ${availableFormats.length === 0 ? 'disabled' : ''}>
+                                    Convert
+                                </button>
+                            </div>
                         </div>
-                        <select class="format-select" id="format-${index}">
-                            ${availableFormats.length > 0 
-                                ? availableFormats.map(fmt => `<option value="${fmt}">Convert to ${fmt.toUpperCase()}</option>`).join('')
-                                : '<option disabled>No formats available</option>'
-                            }
-                        </select>
-                        <button class="convert-btn" onclick="convertFile(${index})" ${availableFormats.length === 0 ? 'disabled' : ''}>
-                            Convert
-                        </button>
+                        <div id="converted-${index}"></div>
                     </div>
                 `;
             }).join('');
@@ -877,7 +908,21 @@
                 const blob = new Blob(['Converted file content'], { type: 'application/octet-stream' });
                 const url = URL.createObjectURL(blob);
                 
-                showMessage(`✓ Conversion complete! <a href="${url}" download="${newName}" class="download-link">Download ${newName}</a>`, 'success');
+                // Add converted file below the original file
+                const convertedDiv = document.getElementById(`converted-${index}`);
+                convertedDiv.innerHTML = `
+                    <div class="converted-file">
+                        <div class="converted-file-item">
+                            <div class="converted-file-info">
+                                <div class="converted-file-name">✓ ${newName}</div>
+                                <div class="converted-file-status">Conversion complete</div>
+                            </div>
+                            <a href="${url}" download="${newName}" class="download-link">Download</a>
+                        </div>
+                    </div>
+                `;
+                
+                showMessage(`✓ Conversion complete!`, 'success');
             }, 1500);
         }
 
