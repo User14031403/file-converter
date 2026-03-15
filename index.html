@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(to bottom, var(--background), var(--muted));
             color: var(--foreground);
             line-height: 1.6;
@@ -35,7 +35,6 @@
             padding: 0 20px;
         }
 
-        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -49,127 +48,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 64px;
+            padding: 16px 0;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--accent), rgba(0, 102, 255, 0.7));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-foreground);
             font-size: 24px;
-        }
-
-        .logo-text h1 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .logo-text p {
-            font-size: 12px;
-            color: var(--muted-foreground);
-        }
-
-        nav {
-            display: none;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 80px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 56px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .hero-content .highlight {
-            background: linear-gradient(to right, var(--accent), rgba(0, 102, 255, 0.7));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-content p {
-            font-size: 18px;
-            color: var(--muted-foreground);
-            margin-bottom: 32px;
-            max-width: 500px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 48px;
-        }
-
-        button.primary {
-            background: var(--accent);
-            color: var(--accent-foreground);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .stat-value {
-            font-size: 28px;
             font-weight: 700;
             color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--muted-foreground);
-        }
-
-        .hero-visual {
-            display: none;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 0;
         }
 
         .section-header {
@@ -178,120 +63,74 @@
         }
 
         .section-header h2 {
-            font-size: 40px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .section-header p {
             font-size: 18px;
             color: var(--muted-foreground);
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        .features-grid {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
         }
 
-        .feature-card {
+        .tool-card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
+            cursor: pointer;
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
-        .feature-card:hover {
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        .tool-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
             transform: translateY(-4px);
         }
 
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            background: rgba(0, 102, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 24px;
+        .tool-icon {
+            font-size: 32px;
         }
 
-        .feature-card h3 {
-            font-size: 18px;
+        .tool-name {
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 8px;
+            color: var(--foreground);
         }
 
-        .feature-card p {
-            font-size: 14px;
+        .tools-category {
+            margin-bottom: 48px;
+        }
+
+        .category-header h3 {
+            font-size: 16px;
+            font-weight: 700;
             color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
         }
 
-        /* Benefits Section */
-        .benefits {
-            padding: 80px 0;
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 32px;
-        }
-
-        .benefit-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .benefit-card:hover {
-            border-color: var(--accent);
-        }
-
-        .benefit-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            background: rgba(0, 102, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 24px;
-        }
-
-        .benefit-card h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .benefit-card p {
-            color: var(--muted-foreground);
-        }
-
-        /* CTA Section */
-        .cta {
-            display: none;
-        }
-
-        /* Converter Section */
         .converter-section {
-            padding: 80px 0;
+            padding: 60px 0;
         }
 
         .upload-area {
             border: 2px dashed var(--border);
-            border-radius: 16px;
-            padding: 48px;
+            border-radius: 12px;
+            padding: 40px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -315,7 +154,6 @@
 
         .upload-area h3 {
             font-size: 20px;
-            font-weight: 600;
             margin-bottom: 8px;
         }
 
@@ -324,30 +162,23 @@
             margin-bottom: 16px;
         }
 
-        input[type="file"] {
+        #fileInput {
             display: none;
-        }
-
-        .file-list {
-            margin-top: 32px;
         }
 
         .file-item {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
         }
 
         .file-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .file-info {
@@ -360,7 +191,7 @@
         }
 
         .file-size {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--muted-foreground);
         }
 
@@ -374,50 +205,38 @@
             padding: 8px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
+            font-size: 14px;
             background: var(--card);
             color: var(--foreground);
             cursor: pointer;
-            font-size: 14px;
         }
 
         .convert-btn {
+            padding: 8px 16px;
             background: var(--accent);
             color: var(--accent-foreground);
             border: none;
-            padding: 8px 16px;
             border-radius: 6px;
-            cursor: pointer;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s;
-            white-space: nowrap;
         }
 
         .convert-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-        }
-
-        .convert-btn:disabled {
-            background: var(--muted);
-            color: var(--muted-foreground);
-            cursor: not-allowed;
-            transform: none;
+            opacity: 0.9;
         }
 
         .converted-file {
-            background: var(--muted);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 12px;
-            padding-left: 20px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
         }
 
         .converted-file-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .converted-file-info {
@@ -425,368 +244,103 @@
         }
 
         .converted-file-name {
-            font-weight: 500;
-            color: var(--foreground);
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
         .converted-file-status {
-            font-size: 12px;
-            color: #22c55e;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: var(--muted);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
-        .status {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--muted-foreground);
-            margin-top: 4px;
-        }
-
-        .status.success {
-            color: #22c55e;
-        }
-
-        .status.error {
-            color: #ef4444;
         }
 
         .download-link {
-            color: var(--accent);
+            padding: 8px 16px;
+            background: var(--accent);
+            color: var(--accent-foreground);
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
-            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
         }
 
         .download-link:hover {
-            text-decoration: underline;
+            opacity: 0.9;
         }
 
-        /* Footer */
+        #messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+        }
+
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left-color: #0066ff;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+            border-left-color: #22c55e;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left-color: #ef4444;
+        }
+
         footer {
+            background: var(--card);
             border-top: 1px solid var(--border);
             padding: 32px 0;
             margin-top: 80px;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-
         .footer-text {
-            font-size: 14px;
+            text-align: center;
             color: var(--muted-foreground);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-        }
-
-        .footer-links a {
-            color: var(--muted-foreground);
-            text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: var(--foreground);
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                padding: 40px 0;
-            }
-
-            .hero-content h1 {
-                font-size: 36px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            nav {
-                display: none;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .benefits-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .upload-area {
-                padding: 32px;
-            }
-
-            .file-item {
+            .file-item-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 12px;
             }
 
+            .file-controls {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .format-select,
             .convert-btn {
-                margin-left: 0;
                 width: 100%;
             }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .page-section {
-            display: block;
-        }
-
-        .page-section.hidden {
-            display: none;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            border: 1px solid #fecaca;
-        }
-
-        .success-message {
-            background: #dcfce7;
-            color: #166534;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            border: 1px solid #bbf7d0;
-        }
-
-        .pdf-tools-section {
-            padding: 80px 0;
-        }
-
-        .tools-category {
-            margin-bottom: 64px;
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .category-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--muted-foreground);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-        }
-
-        .tool-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .tool-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
-            transform: translateY(-4px);
-        }
-
-        .tool-icon {
-            font-size: 32px;
-            line-height: 1;
-        }
-
-        .tool-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--foreground);
-        }
-
-        .tool-card.coming-soon {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .tool-card.coming-soon:hover {
-            border-color: var(--border);
-            box-shadow: none;
-            transform: none;
-        }
-
-        .coming-soon-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--accent);
-            color: var(--accent-foreground);
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">📄</div>
-                    <div class="logo-text">
-                        <h1>FileConvert</h1>
-                        <p>Universal Converter</p>
-                    </div>
-                </div>
+                <div class="logo">FileConvert</div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Home Section -->
-        <section id="home" class="page-section active">
-            <!-- Hero -->
-            <div class="hero">
-                <div class="hero-content">
-                    <h1>Convert Any File, <span class="highlight">Instantly</span></h1>
-                    <p>Transform your documents, images, audio, video, and archives with our elegant, intuitive converter. No sign-up required to get started.</p>
-                    <div class="hero-buttons">
-                        <button class="primary" onclick="navigateTo('converter')">
-                            Start Converting →
-                        </button>
-                    </div>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">5+</div>
-                            <div class="stat-label">File Types</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">Instant</div>
-                            <div class="stat-label">Conversion</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">100%</div>
-                            <div class="stat-label">Private</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Features -->
-            <section class="features">
-                <div class="section-header">
-                    <h2>Supported Formats</h2>
-                    <p>Convert between multiple file formats with professional quality</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">📄</div>
-                        <h3>Documents</h3>
-                        <p>Convert between DOCX and PDF formats seamlessly</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🖼️</div>
-                        <h3>Images</h3>
-                        <p>Transform JPEG, PNG, and SVG with ease</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎵</div>
-                        <h3>Audio</h3>
-                        <p>Convert MP3 and WAV audio files</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎬</div>
-                        <h3>Video</h3>
-                        <p>Process MP4 and MOV video formats</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📦</div>
-                        <h3>Compression</h3>
-                        <p>Compress and decompress ZIP files</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Benefits -->
-            <section class="benefits">
-                <div class="section-header">
-                    <h2>Why Choose FileConvert?</h2>
-                    <p>Experience the perfect balance of speed, security, and simplicity</p>
-                </div>
-                <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">⚡</div>
-                        <h3>Lightning Fast</h3>
-                        <p>Process conversions in seconds with optimized algorithms</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">🔒</div>
-                        <h3>Secure & Private</h3>
-                        <p>Your files are encrypted and never stored permanently</p>
-                    </div>
-                    <div class="benefit-card">
-                        <div class="benefit-icon">⏱️</div>
-                        <h3>Batch Processing</h3>
-                        <p>Convert multiple files at once to save time</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PDF Tools -->
-            <section class="pdf-tools-section">
+    <main>
+        <div class="container">
+            <!-- PDF Tools Section -->
+            <section style="padding: 80px 0;">
                 <div class="section-header">
                     <h2>PDF Tools</h2>
                     <p>Comprehensive PDF management and conversion tools</p>
@@ -794,359 +348,276 @@
 
                 <!-- Organize PDF -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>Organize PDF</h3>
-                    </div>
+                    <div class="category-header"><h3>Organize PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('merge-pdf')">
-                            <div class="tool-icon">📎</div>
-                            <div class="tool-name">Merge PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('split-pdf')">
-                            <div class="tool-icon">✂️</div>
-                            <div class="tool-name">Split PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('remove-pages')">
-                            <div class="tool-icon">🗑️</div>
-                            <div class="tool-name">Remove pages</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('extract-pages')">
-                            <div class="tool-icon">📤</div>
-                            <div class="tool-name">Extract pages</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('organize-pdf')">
-                            <div class="tool-icon">📑</div>
-                            <div class="tool-name">Organize PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('scan-pdf')">
-                            <div class="tool-icon">📸</div>
-                            <div class="tool-name">Scan to PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('merge-pdf')"><div class="tool-icon">📎</div><div class="tool-name">Merge PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('split-pdf')"><div class="tool-icon">✂️</div><div class="tool-name">Split PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('remove-pages')"><div class="tool-icon">🗑️</div><div class="tool-name">Remove pages</div></div>
+                        <div class="tool-card" onclick="selectTool('extract-pages')"><div class="tool-icon">📤</div><div class="tool-name">Extract pages</div></div>
+                        <div class="tool-card" onclick="selectTool('organize-pdf')"><div class="tool-icon">📑</div><div class="tool-name">Organize PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('scan-pdf')"><div class="tool-icon">📸</div><div class="tool-name">Scan to PDF</div></div>
                     </div>
                 </div>
 
                 <!-- Optimize PDF -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>Optimize PDF</h3>
-                    </div>
+                    <div class="category-header"><h3>Optimize PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('compress-pdf')">
-                            <div class="tool-icon">📦</div>
-                            <div class="tool-name">Compress PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('repair-pdf')">
-                            <div class="tool-icon">🔧</div>
-                            <div class="tool-name">Repair PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('ocr-pdf')">
-                            <div class="tool-icon">👁️</div>
-                            <div class="tool-name">OCR PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('compress-pdf')"><div class="tool-icon">📦</div><div class="tool-name">Compress PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('repair-pdf')"><div class="tool-icon">🔧</div><div class="tool-name">Repair PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('ocr-pdf')"><div class="tool-icon">👁️</div><div class="tool-name">OCR PDF</div></div>
                     </div>
                 </div>
 
                 <!-- Convert to PDF -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>Convert to PDF</h3>
-                    </div>
+                    <div class="category-header"><h3>Convert to PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('jpg-to-pdf')">
-                            <div class="tool-icon">🖼️</div>
-                            <div class="tool-name">JPG to PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('word-to-pdf')">
-                            <div class="tool-icon">📝</div>
-                            <div class="tool-name">WORD to PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('ppt-to-pdf')">
-                            <div class="tool-icon">📊</div>
-                            <div class="tool-name">POWERPOINT to PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('excel-to-pdf')">
-                            <div class="tool-icon">📈</div>
-                            <div class="tool-name">EXCEL to PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('html-to-pdf')">
-                            <div class="tool-icon">🌐</div>
-                            <div class="tool-name">HTML to PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('jpg-to-pdf')"><div class="tool-icon">🖼️</div><div class="tool-name">JPG to PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('word-to-pdf')"><div class="tool-icon">📝</div><div class="tool-name">WORD to PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('ppt-to-pdf')"><div class="tool-icon">📊</div><div class="tool-name">POWERPOINT to PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('excel-to-pdf')"><div class="tool-icon">📈</div><div class="tool-name">EXCEL to PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('html-to-pdf')"><div class="tool-icon">🌐</div><div class="tool-name">HTML to PDF</div></div>
                     </div>
                 </div>
 
                 <!-- Convert from PDF -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>Convert from PDF</h3>
-                    </div>
+                    <div class="category-header"><h3>Convert from PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('pdf-to-jpg')">
-                            <div class="tool-icon">🖼️</div>
-                            <div class="tool-name">PDF to JPG</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('pdf-to-word')">
-                            <div class="tool-icon">📝</div>
-                            <div class="tool-name">PDF to WORD</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('pdf-to-ppt')">
-                            <div class="tool-icon">📊</div>
-                            <div class="tool-name">PDF to POWERPOINT</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('pdf-to-excel')">
-                            <div class="tool-icon">📈</div>
-                            <div class="tool-name">PDF to EXCEL</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('pdf-to-pdfa')">
-                            <div class="tool-icon">📄</div>
-                            <div class="tool-name">PDF to PDF/A</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-jpg')"><div class="tool-icon">🖼️</div><div class="tool-name">PDF to JPG</div></div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-word')"><div class="tool-icon">📝</div><div class="tool-name">PDF to WORD</div></div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-ppt')"><div class="tool-icon">📊</div><div class="tool-name">PDF to POWERPOINT</div></div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-excel')"><div class="tool-icon">📈</div><div class="tool-name">PDF to EXCEL</div></div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-pdfa')"><div class="tool-icon">📄</div><div class="tool-name">PDF to PDF/A</div></div>
                     </div>
                 </div>
 
                 <!-- Edit PDF -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>Edit PDF</h3>
-                    </div>
+                    <div class="category-header"><h3>Edit PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('rotate-pdf')">
-                            <div class="tool-icon">🔄</div>
-                            <div class="tool-name">Rotate PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('add-page-numbers')">
-                            <div class="tool-icon">🔢</div>
-                            <div class="tool-name">Add page numbers</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('add-watermark')">
-                            <div class="tool-icon">💧</div>
-                            <div class="tool-name">Add watermark</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('crop-pdf')">
-                            <div class="tool-icon">✏️</div>
-                            <div class="tool-name">Crop PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('edit-pdf')">
-                            <div class="tool-icon">✒️</div>
-                            <div class="tool-name">Edit PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('rotate-pdf')"><div class="tool-icon">🔄</div><div class="tool-name">Rotate PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('add-page-numbers')"><div class="tool-icon">🔢</div><div class="tool-name">Add page numbers</div></div>
+                        <div class="tool-card" onclick="selectTool('add-watermark')"><div class="tool-icon">💧</div><div class="tool-name">Add watermark</div></div>
+                        <div class="tool-card" onclick="selectTool('crop-pdf')"><div class="tool-icon">✏️</div><div class="tool-name">Crop PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('edit-pdf')"><div class="tool-icon">✒️</div><div class="tool-name">Edit PDF</div></div>
                     </div>
                 </div>
 
                 <!-- PDF Security -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>PDF Security</h3>
-                    </div>
+                    <div class="category-header"><h3>PDF Security</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('unlock-pdf')">
-                            <div class="tool-icon">🔓</div>
-                            <div class="tool-name">Unlock PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('protect-pdf')">
-                            <div class="tool-icon">🔒</div>
-                            <div class="tool-name">Protect PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('sign-pdf')">
-                            <div class="tool-icon">✍️</div>
-                            <div class="tool-name">Sign PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('redact-pdf')">
-                            <div class="tool-icon">🚫</div>
-                            <div class="tool-name">Redact PDF</div>
-                        </div>
-                        <div class="tool-card" onclick="selectTool('compare-pdf')">
-                            <div class="tool-icon">⚖️</div>
-                            <div class="tool-name">Compare PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('unlock-pdf')"><div class="tool-icon">🔓</div><div class="tool-name">Unlock PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('protect-pdf')"><div class="tool-icon">🔒</div><div class="tool-name">Protect PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('sign-pdf')"><div class="tool-icon">✍️</div><div class="tool-name">Sign PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('redact-pdf')"><div class="tool-icon">🚫</div><div class="tool-name">Redact PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('compare-pdf')"><div class="tool-icon">⚖️</div><div class="tool-name">Compare PDF</div></div>
                     </div>
                 </div>
 
                 <!-- PDF Intelligence -->
                 <div class="tools-category">
-                    <div class="category-header">
-                        <h3>PDF Intelligence</h3>
-                    </div>
+                    <div class="category-header"><h3>PDF Intelligence</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('translate-pdf')">
-                            <div class="tool-icon">🌍</div>
-                            <div class="tool-name">Translate PDF</div>
-                        </div>
+                        <div class="tool-card" onclick="selectTool('translate-pdf')"><div class="tool-icon">🌍</div><div class="tool-name">Translate PDF</div></div>
                     </div>
                 </div>
             </section>
 
-            <!-- CTA -->
-            <div class="cta">
-                <h2>Ready to Convert?</h2>
-                <p>Start converting your files now. No account required for basic conversions.</p>
-                <button class="primary" onclick="navigateTo('converter')">
-                    Go to Converter →
-                </button>
-            </div>
-        </section>
+            <!-- Converter Section -->
+            <section class="converter-section">
+                <div class="section-header">
+                    <h2 id="toolTitle">Select a Tool</h2>
+                    <p id="toolDesc">Choose a PDF tool above to get started</p>
+                </div>
 
-        <!-- Converter Section -->
-        <section id="converter" class="converter-section">
-            <div class="section-header">
-                <h2>File Converter</h2>
-                <p>Upload your files and select the target format</p>
-            </div>
+                <div id="messages"></div>
 
-            <div id="messages"></div>
+                <div class="upload-area" id="uploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <div class="upload-icon">📁</div>
+                    <h3>Select a tool above</h3>
+                    <p>Then drop your files here or click to browse</p>
+                    <input type="file" id="fileInput" multiple onchange="handleFileSelect(event)">
+                </div>
 
-            <div class="upload-area" id="uploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
-                <div class="upload-icon">📁</div>
-                <h3>Drop your files here</h3>
-                <p>or click to browse</p>
-                <input type="file" id="fileInput" multiple onchange="handleFileSelect(event)">
-            </div>
-
-            <div class="file-list" id="fileList"></div>
-        </section>
+                <div id="fileList"></div>
+            </section>
+        </div>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <p class="footer-text">&copy; 2026 FileConvert. All rights reserved.</p>
-            </div>
+            <p class="footer-text">&copy; 2026 FileConvert. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Select PDF tool and activate it
+        // Tool options definition
+        const toolOptions = {
+            'merge-pdf': { formats: ['PDF'], icon: '📎', title: 'Merge PDF', desc: 'Combine multiple PDFs into one' },
+            'split-pdf': { formats: ['PDF'], icon: '✂️', title: 'Split PDF', desc: 'Split PDF into separate pages' },
+            'remove-pages': { formats: ['PDF'], icon: '🗑️', title: 'Remove Pages', desc: 'Remove specific pages from PDF' },
+            'extract-pages': { formats: ['PDF'], icon: '📤', title: 'Extract Pages', desc: 'Extract specific pages from PDF' },
+            'organize-pdf': { formats: ['PDF'], icon: '📑', title: 'Organize PDF', desc: 'Rearrange pages in PDF' },
+            'scan-pdf': { formats: ['PDF'], icon: '📸', title: 'Scan to PDF', desc: 'Convert scans to PDF' },
+            'compress-pdf': { formats: ['PDF'], icon: '📦', title: 'Compress PDF', desc: 'Reduce PDF file size' },
+            'repair-pdf': { formats: ['PDF'], icon: '🔧', title: 'Repair PDF', desc: 'Fix corrupted PDF files' },
+            'ocr-pdf': { formats: ['PDF'], icon: '👁️', title: 'OCR PDF', desc: 'Extract text from scanned PDFs' },
+            'jpg-to-pdf': { formats: ['PDF'], icon: '🖼️', title: 'JPG to PDF', desc: 'Convert images to PDF' },
+            'word-to-pdf': { formats: ['PDF'], icon: '📝', title: 'WORD to PDF', desc: 'Convert Word documents to PDF' },
+            'ppt-to-pdf': { formats: ['PDF'], icon: '📊', title: 'POWERPOINT to PDF', desc: 'Convert presentations to PDF' },
+            'excel-to-pdf': { formats: ['PDF'], icon: '📈', title: 'EXCEL to PDF', desc: 'Convert spreadsheets to PDF' },
+            'html-to-pdf': { formats: ['PDF'], icon: '🌐', title: 'HTML to PDF', desc: 'Convert web pages to PDF' },
+            'pdf-to-jpg': { formats: ['JPG', 'PNG', 'TIFF'], icon: '🖼️', title: 'PDF to JPG', desc: 'Convert PDF pages to images' },
+            'pdf-to-word': { formats: ['DOCX', 'DOC'], icon: '📝', title: 'PDF to WORD', desc: 'Convert PDF to Word document' },
+            'pdf-to-ppt': { formats: ['PPTX', 'PPT'], icon: '📊', title: 'PDF to POWERPOINT', desc: 'Convert PDF to presentation' },
+            'pdf-to-excel': { formats: ['XLSX', 'XLS'], icon: '📈', title: 'PDF to EXCEL', desc: 'Convert PDF to spreadsheet' },
+            'pdf-to-pdfa': { formats: ['PDF/A'], icon: '📄', title: 'PDF to PDF/A', desc: 'Convert to PDF/A format' },
+            'rotate-pdf': { formats: ['90°', '180°', '270°'], icon: '🔄', title: 'Rotate PDF', desc: 'Rotate PDF pages' },
+            'add-page-numbers': { formats: ['Top', 'Bottom', 'Custom'], icon: '🔢', title: 'Add Page Numbers', desc: 'Add page numbers to PDF' },
+            'add-watermark': { formats: ['Text', 'Image'], icon: '💧', title: 'Add Watermark', desc: 'Add watermark to PDF' },
+            'crop-pdf': { formats: ['Auto', 'Manual'], icon: '✏️', title: 'Crop PDF', desc: 'Crop PDF pages' },
+            'edit-pdf': { formats: ['Text', 'Drawing', 'Shapes'], icon: '✒️', title: 'Edit PDF', desc: 'Edit PDF content' },
+            'unlock-pdf': { formats: ['Remove Password'], icon: '🔓', title: 'Unlock PDF', desc: 'Remove PDF password protection' },
+            'protect-pdf': { formats: ['Add Password', 'Restrict'], icon: '🔒', title: 'Protect PDF', desc: 'Add password protection to PDF' },
+            'sign-pdf': { formats: ['Digital Signature'], icon: '✍️', title: 'Sign PDF', desc: 'Add digital signature to PDF' },
+            'redact-pdf': { formats: ['Hide Content'], icon: '🚫', title: 'Redact PDF', desc: 'Hide sensitive content in PDF' },
+            'compare-pdf': { formats: ['Show Differences'], icon: '⚖️', title: 'Compare PDF', desc: 'Compare two PDF files' },
+            'translate-pdf': { formats: ['Multiple Languages'], icon: '🌍', title: 'Translate PDF', desc: 'Translate PDF to other languages' }
+        };
+
+        let currentTool = null;
+        let currentFile = null;
+
         function selectTool(toolName) {
-            const toolDisplayName = toolName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            currentTool = toolName;
+            const tool = toolOptions[toolName];
             
-            // Clear previous messages
+            document.getElementById('toolTitle').textContent = tool.title;
+            document.getElementById('toolDesc').textContent = tool.desc;
             document.getElementById('messages').innerHTML = '';
-            
-            // Show tool interface
-            const uploadArea = document.getElementById('uploadArea');
-            uploadArea.innerHTML = `
-                <div class="upload-icon">📁</div>
-                <h3>${toolDisplayName}</h3>
-                <p>Drop your files here or click to browse</p>
-                <input type="file" id="toolFileInput" multiple onchange="handleToolFileSelect(event, '${toolName}')"/>
-            `;
-            uploadArea.onclick = () => document.getElementById('toolFileInput').click();
-            
-            // Clear file list
             document.getElementById('fileList').innerHTML = '';
             
-            // Scroll to converter
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.innerHTML = `
+                <div class="upload-icon">${tool.icon}</div>
+                <h3>${tool.title}</h3>
+                <p>Drop your files here or click to browse</p>
+                <input type="file" id="fileInput" onchange="handleFileSelect(event)">
+            `;
+            uploadArea.onclick = () => document.getElementById('fileInput').click();
+            
             document.querySelector('.converter-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Handle file selection for PDF tools
-        function handleToolFileSelect(event, toolName) {
-            const files = event.target.files;
-            if (files.length === 0) return;
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            if (!currentTool) {
+                showMessage('Please select a tool first', 'error');
+                return;
+            }
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect({ target: { files } });
+            }
+        }
+
+        function handleFileSelect(e) {
+            if (!currentTool) {
+                showMessage('Please select a tool first', 'error');
+                return;
+            }
             
-            const file = files[0];
-            const toolDisplayName = toolName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            const file = e.target.files[0];
+            if (!file) return;
             
-            showMessage(`Processing ${file.name} with ${toolDisplayName}...`, 'info');
+            currentFile = file;
+            const tool = toolOptions[currentTool];
+            const options = tool.formats;
             
-            // Simulate tool processing
+            const optionsHTML = options.map(fmt => `<option value="${fmt}">${fmt}</option>`).join('');
+            
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = `
+                <div class="file-item">
+                    <div class="file-item-header">
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                        </div>
+                        <div class="file-controls">
+                            <select class="format-select" id="formatSelect">
+                                ${optionsHTML}
+                            </select>
+                            <button class="convert-btn" onclick="convertFile()">Convert</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function convertFile() {
+            if (!currentFile || !currentTool) return;
+            
+            const format = document.getElementById('formatSelect').value;
+            const tool = toolOptions[currentTool];
+            
+            showMessage(`Converting to ${format}...`, 'info');
+            
             setTimeout(() => {
-                let outputName = file.name;
+                const baseName = currentFile.name.split('.').slice(0, -1).join('.');
+                let outputName = `${baseName}_converted.${format.toLowerCase()}`;
                 let outputType = 'application/pdf';
                 
-                // Tool-specific processing
-                switch(toolName) {
-                    case 'merge-pdf':
-                        outputName = 'merged.pdf';
-                        break;
-                    case 'split-pdf':
-                        outputName = 'split_pages.pdf';
-                        break;
-                    case 'compress-pdf':
-                        outputName = file.name.replace('.pdf', '_compressed.pdf');
-                        break;
-                    case 'jpg-to-pdf':
-                        outputName = file.name.replace(/\.(jpg|jpeg)$/i, '.pdf');
-                        break;
-                    case 'word-to-pdf':
-                        outputName = file.name.replace(/\.(doc|docx)$/i, '.pdf');
-                        break;
-                    case 'ppt-to-pdf':
-                        outputName = file.name.replace(/\.(ppt|pptx)$/i, '.pdf');
-                        break;
-                    case 'excel-to-pdf':
-                        outputName = file.name.replace(/\.(xls|xlsx)$/i, '.pdf');
-                        break;
-                    case 'html-to-pdf':
-                        outputName = file.name.replace(/\.html$/i, '.pdf');
-                        break;
-                    case 'pdf-to-jpg':
-                        outputName = file.name.replace(/\.pdf$/i, '.jpg');
-                        outputType = 'image/jpeg';
-                        break;
-                    case 'pdf-to-word':
-                        outputName = file.name.replace(/\.pdf$/i, '.docx');
-                        outputType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                        break;
-                    case 'pdf-to-ppt':
-                        outputName = file.name.replace(/\.pdf$/i, '.pptx');
-                        outputType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
-                        break;
-                    case 'pdf-to-excel':
-                        outputName = file.name.replace(/\.pdf$/i, '.xlsx');
-                        outputType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                        break;
-                    case 'rotate-pdf':
-                        outputName = file.name.replace('.pdf', '_rotated.pdf');
-                        break;
-                    case 'add-watermark':
-                        outputName = file.name.replace('.pdf', '_watermarked.pdf');
-                        break;
-                    case 'crop-pdf':
-                        outputName = file.name.replace('.pdf', '_cropped.pdf');
-                        break;
-                    case 'edit-pdf':
-                        outputName = file.name.replace('.pdf', '_edited.pdf');
-                        break;
-                    case 'unlock-pdf':
-                        outputName = file.name.replace('.pdf', '_unlocked.pdf');
-                        break;
-                    case 'protect-pdf':
-                        outputName = file.name.replace('.pdf', '_protected.pdf');
-                        break;
-                    case 'sign-pdf':
-                        outputName = file.name.replace('.pdf', '_signed.pdf');
-                        break;
-                    case 'redact-pdf':
-                        outputName = file.name.replace('.pdf', '_redacted.pdf');
-                        break;
-                    case 'translate-pdf':
-                        outputName = file.name.replace('.pdf', '_translated.pdf');
-                        break;
-                    default:
-                        outputName = file.name + '_converted';
+                if (format === 'JPG') {
+                    outputName = `${baseName}.jpg`;
+                    outputType = 'image/jpeg';
+                } else if (format === 'PNG') {
+                    outputName = `${baseName}.png`;
+                    outputType = 'image/png';
+                } else if (format === 'TIFF') {
+                    outputName = `${baseName}.tiff`;
+                    outputType = 'image/tiff';
+                } else if (format === 'DOCX' || format === 'DOC') {
+                    outputName = `${baseName}.docx`;
+                    outputType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                } else if (format === 'PPTX' || format === 'PPT') {
+                    outputName = `${baseName}.pptx`;
+                    outputType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+                } else if (format === 'XLSX' || format === 'XLS') {
+                    outputName = `${baseName}.xlsx`;
+                    outputType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                 }
                 
-                // Create dummy output file
-                const blob = new Blob(['Processed file content'], { type: outputType });
+                const blob = new Blob(['Converted file content'], { type: outputType });
                 const url = URL.createObjectURL(blob);
                 
-                // Display result
                 const fileList = document.getElementById('fileList');
                 fileList.innerHTML = `
                     <div class="file-item">
                         <div class="file-item-header">
                             <div class="file-info">
                                 <div class="file-name">✓ ${outputName}</div>
-                                <div class="file-size">${toolDisplayName} completed</div>
+                                <div class="file-size">Conversion complete</div>
                             </div>
                         </div>
                         <div class="converted-file">
                             <div class="converted-file-item">
                                 <div class="converted-file-info">
                                     <div class="converted-file-name">Ready to download</div>
-                                    <div class="converted-file-status">Processing complete</div>
+                                    <div class="converted-file-status">Converted to ${format}</div>
                                 </div>
                                 <a href="${url}" download="${outputName}" class="download-link">Download</a>
                             </div>
@@ -1154,203 +625,16 @@
                     </div>
                 `;
                 
-                showMessage(`✓ ${toolDisplayName} completed successfully!`, 'success');
+                showMessage(`✓ Conversion completed! Ready to download.`, 'success');
             }, 1500);
         }
 
-        // Navigation - scroll to converter section
-        function navigateTo(page) {
-            if (page === 'converter') {
-                document.querySelector('.converter-section').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        // Format support mapping
-        const formatSupport = {
-            'document': {
-                'pdf': ['docx'],
-                'docx': ['pdf']
-            },
-            'image': {
-                'jpeg': ['png', 'svg'],
-                'png': ['jpeg', 'svg'],
-                'svg': ['jpeg', 'png']
-            },
-            'audio': {
-                'mp3': ['wav'],
-                'wav': ['mp3']
-            },
-            'video': {
-                'mp4': ['mov'],
-                'mov': ['mp4']
-            },
-            'archive': {
-                'zip': ['zip']
-            }
-        };
-
-        const fileTypeMap = {
-            'pdf': 'document',
-            'docx': 'document',
-            'jpg': 'image',
-            'jpeg': 'image',
-            'png': 'image',
-            'svg': 'image',
-            'mp3': 'audio',
-            'wav': 'audio',
-            'mp4': 'video',
-            'mov': 'video',
-            'zip': 'archive'
-        };
-
-        let uploadedFiles = [];
-
-
-
-        // Upload handling
-        const uploadArea = document.getElementById('uploadArea');
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        }
-
-        function handleDragLeave(e) {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            handleFiles(files);
-        }
-
-        uploadArea.addEventListener('click', () => {
-            document.getElementById('fileInput').click();
-        });
-
-        function handleFileSelect(e) {
-            handleFiles(e.target.files);
-        }
-
-        function handleFiles(files) {
-            uploadedFiles = [];
-            for (let file of files) {
-                uploadedFiles.push({
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    file: file
-                });
-            }
-            renderFileList();
-        }
-
-        function getFileExtension(filename) {
-            return filename.split('.').pop().toLowerCase();
-        }
-
-        function getAvailableFormats(filename) {
-            const ext = getFileExtension(filename);
-            const fileType = fileTypeMap[ext];
-            if (!fileType || !formatSupport[fileType]) {
-                return [];
-            }
-            return formatSupport[fileType][ext] || [];
-        }
-
-        function renderFileList() {
-            const fileList = document.getElementById('fileList');
-            if (uploadedFiles.length === 0) {
-                fileList.innerHTML = '';
-                return;
-            }
-
-            fileList.innerHTML = uploadedFiles.map((file, index) => {
-                const availableFormats = getAvailableFormats(file.name);
-                const ext = getFileExtension(file.name);
-                const sizeInMB = (file.size / 1024 / 1024).toFixed(2);
-
-                return `
-                    <div class="file-item">
-                        <div class="file-item-header">
-                            <div class="file-info">
-                                <div class="file-name">${file.name}</div>
-                                <div class="file-size">${sizeInMB} MB</div>
-                            </div>
-                            <div class="file-controls">
-                                <select class="format-select" id="format-${index}">
-                                    ${availableFormats.length > 0 
-                                        ? availableFormats.map(fmt => `<option value="${fmt}">Convert to ${fmt.toUpperCase()}</option>`).join('')
-                                        : '<option disabled>No formats available</option>'
-                                    }
-                                </select>
-                                <button class="convert-btn" onclick="convertFile(${index})" ${availableFormats.length === 0 ? 'disabled' : ''}>
-                                    Convert
-                                </button>
-                            </div>
-                        </div>
-                        <div id="converted-${index}"></div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function convertFile(index) {
-            const file = uploadedFiles[index];
-            const targetFormat = document.getElementById(`format-${index}`).value;
-            
-            if (!targetFormat) {
-                showMessage('Please select a target format', 'error');
-                return;
-            }
-
-            showMessage(`Converting ${file.name} to ${targetFormat.toUpperCase()}...`, 'info');
-
-            // Simulate conversion (in real app, this would call a backend API)
-            setTimeout(() => {
-                const ext = getFileExtension(file.name);
-                const newName = file.name.replace(`.${ext}`, `.${targetFormat}`);
-                
-                // Create a dummy file for download
-                const blob = new Blob(['Converted file content'], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                
-                // Add converted file below the original file
-                const convertedDiv = document.getElementById(`converted-${index}`);
-                convertedDiv.innerHTML = `
-                    <div class="converted-file">
-                        <div class="converted-file-item">
-                            <div class="converted-file-info">
-                                <div class="converted-file-name">✓ ${newName}</div>
-                                <div class="converted-file-status">Conversion complete</div>
-                            </div>
-                            <a href="${url}" download="${newName}" class="download-link">Download</a>
-                        </div>
-                    </div>
-                `;
-                
-                showMessage(`✓ Conversion complete!`, 'success');
-            }, 1500);
-        }
-
-        function showMessage(text, type = 'info') {
-            const messagesDiv = document.getElementById('messages');
-            const messageEl = document.createElement('div');
-            messageEl.className = `${type}-message`;
-            messageEl.innerHTML = text;
-            messagesDiv.innerHTML = '';
-            messagesDiv.appendChild(messageEl);
-
-            if (type === 'success') {
-                setTimeout(() => {
-                    messageEl.remove();
-                }, 5000);
-            }
+        function showMessage(text, type) {
+            const messages = document.getElementById('messages');
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            messages.appendChild(msg);
         }
     </script>
 </body>
