@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfjs-dist/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ffmpeg@0.12.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -391,6 +391,32 @@
                     </div>
                 </div>
 
+                <!-- Audio Tools -->
+                <div class="tools-category">
+                    <div class="category-header"><h3>Audio Conversion</h3></div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('mp3-to-wav')"><div class="tool-icon">🎵</div><div class="tool-name">MP3 to WAV</div></div>
+                        <div class="tool-card" onclick="selectTool('wav-to-mp3')"><div class="tool-icon">🎵</div><div class="tool-name">WAV to MP3</div></div>
+                        <div class="tool-card" onclick="selectTool('mp3-to-m4a')"><div class="tool-icon">🎵</div><div class="tool-name">MP3 to M4A</div></div>
+                        <div class="tool-card" onclick="selectTool('m4a-to-mp3')"><div class="tool-icon">🎵</div><div class="tool-name">M4A to MP3</div></div>
+                        <div class="tool-card" onclick="selectTool('wav-to-m4a')"><div class="tool-icon">🎵</div><div class="tool-name">WAV to M4A</div></div>
+                        <div class="tool-card" onclick="selectTool('m4a-to-wav')"><div class="tool-icon">🎵</div><div class="tool-name">M4A to WAV</div></div>
+                    </div>
+                </div>
+
+                <!-- Video Tools -->
+                <div class="tools-category">
+                    <div class="category-header"><h3>Video Conversion</h3></div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('mp4-to-mov')"><div class="tool-icon">🎬</div><div class="tool-name">MP4 to MOV</div></div>
+                        <div class="tool-card" onclick="selectTool('mov-to-mp4')"><div class="tool-icon">🎬</div><div class="tool-name">MOV to MP4</div></div>
+                        <div class="tool-card" onclick="selectTool('mp4-to-avi')"><div class="tool-icon">🎬</div><div class="tool-name">MP4 to AVI</div></div>
+                        <div class="tool-card" onclick="selectTool('avi-to-mp4')"><div class="tool-icon">🎬</div><div class="tool-name">AVI to MP4</div></div>
+                        <div class="tool-card" onclick="selectTool('mp4-to-webm')"><div class="tool-icon">🎬</div><div class="tool-name">MP4 to WebM</div></div>
+                        <div class="tool-card" onclick="selectTool('webm-to-mp4')"><div class="tool-icon">🎬</div><div class="tool-name">WebM to MP4</div></div>
+                    </div>
+                </div>
+
                 <!-- Archive Tools -->
                 <div class="tools-category">
                     <div class="category-header"><h3>Archive & Compression</h3></div>
@@ -435,11 +461,14 @@
     </footer>
 
     <script>
+        const { FFmpeg, fetchFile } = FFmpeg;
         const { PDFDocument } = PDFLib;
 
         let currentTool = null;
         let currentFile = null;
         let fileData = null;
+        let ffmpeg = null;
+        let ffmpegReady = false;
 
         const toolOptions = {
             'pdf-to-word': { title: 'PDF to Word', desc: 'Convert PDF to Word document', accept: '.pdf' },
@@ -455,9 +484,36 @@
             'png-to-webp': { title: 'PNG to WebP', desc: 'Convert PNG to WebP', accept: '.png' },
             'webp-to-jpg': { title: 'WebP to JPG', desc: 'Convert WebP to JPG', accept: '.webp' },
             'image-to-pdf': { title: 'Image to PDF', desc: 'Convert Image to PDF', accept: '.jpg,.jpeg,.png,.webp' },
+            'mp3-to-wav': { title: 'MP3 to WAV', desc: 'Convert MP3 to WAV', accept: '.mp3' },
+            'wav-to-mp3': { title: 'WAV to MP3', desc: 'Convert WAV to MP3', accept: '.wav' },
+            'mp3-to-m4a': { title: 'MP3 to M4A', desc: 'Convert MP3 to M4A', accept: '.mp3' },
+            'm4a-to-mp3': { title: 'M4A to MP3', desc: 'Convert M4A to MP3', accept: '.m4a' },
+            'wav-to-m4a': { title: 'WAV to M4A', desc: 'Convert WAV to M4A', accept: '.wav' },
+            'm4a-to-wav': { title: 'M4A to WAV', desc: 'Convert M4A to WAV', accept: '.m4a' },
+            'mp4-to-mov': { title: 'MP4 to MOV', desc: 'Convert MP4 to MOV', accept: '.mp4' },
+            'mov-to-mp4': { title: 'MOV to MP4', desc: 'Convert MOV to MP4', accept: '.mov' },
+            'mp4-to-avi': { title: 'MP4 to AVI', desc: 'Convert MP4 to AVI', accept: '.mp4' },
+            'avi-to-mp4': { title: 'AVI to MP4', desc: 'Convert AVI to MP4', accept: '.avi' },
+            'mp4-to-webm': { title: 'MP4 to WebM', desc: 'Convert MP4 to WebM', accept: '.mp4' },
+            'webm-to-mp4': { title: 'WebM to MP4', desc: 'Convert WebM to MP4', accept: '.webm' },
             'zip-extract': { title: 'Extract ZIP', desc: 'Extract files from ZIP', accept: '.zip' },
             'create-zip': { title: 'Create ZIP', desc: 'Create ZIP archive', accept: '*' }
         };
+
+        // Initialize FFmpeg
+        async function initFFmpeg() {
+            if (ffmpegReady) return;
+            try {
+                ffmpeg = new FFmpeg.FFmpeg();
+                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+                await ffmpeg.load({
+                    coreURL: `${baseURL}/ffmpeg-core.js`,
+                });
+                ffmpegReady = true;
+            } catch (err) {
+                console.warn('FFmpeg initialization failed:', err);
+            }
+        }
 
         function selectTool(toolName) {
             currentTool = toolName;
@@ -557,7 +613,7 @@
             btn.innerHTML = '<div class="loading"></div>';
             
             try {
-                // PDF to Word
+                // PDF conversions
                 if (currentTool === 'pdf-to-word') {
                     const pdf = await pdfjsLib.getDocument({ data: fileData }).promise;
                     let text = '';
@@ -569,19 +625,13 @@
                     const doc = new docx.Document({
                         sections: [{
                             properties: {},
-                            children: [
-                                new docx.Paragraph({
-                                    text: text || 'PDF content converted to Word',
-                                    style: 'Normal'
-                                })
-                            ]
+                            children: [new docx.Paragraph({ text: text || 'PDF content converted to Word', style: 'Normal' })]
                         }]
                     });
                     const blob = await docx.Packer.toBlob(doc);
                     downloadFile(blob, currentFile.name.split('.')[0] + '.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
                 }
                 
-                // PDF to TXT
                 else if (currentTool === 'pdf-to-txt') {
                     const pdf = await pdfjsLib.getDocument({ data: fileData }).promise;
                     let text = '';
@@ -594,7 +644,6 @@
                     downloadFile(blob, currentFile.name.split('.')[0] + '.txt', 'text/plain');
                 }
                 
-                // Word to PDF
                 else if (currentTool === 'word-to-pdf') {
                     const pdfDoc = await PDFDocument.create();
                     const page = pdfDoc.addPage([595, 842]);
@@ -603,7 +652,6 @@
                     downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
-                // TXT to PDF
                 else if (currentTool === 'txt-to-pdf') {
                     const text = new TextDecoder().decode(fileData);
                     const pdfDoc = await PDFDocument.create();
@@ -619,7 +667,6 @@
                     downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
-                // CSV to PDF
                 else if (currentTool === 'csv-to-pdf') {
                     const csv = new TextDecoder().decode(fileData);
                     const pdfDoc = await PDFDocument.create();
@@ -635,7 +682,6 @@
                     downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
-                // CSV to XLSX
                 else if (currentTool === 'csv-to-xlsx') {
                     const csv = new TextDecoder().decode(fileData);
                     const lines = csv.split('\n');
@@ -647,7 +693,6 @@
                     downloadFile(wbout, currentFile.name.split('.')[0] + '.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 }
                 
-                // XLSX to CSV
                 else if (currentTool === 'xlsx-to-csv') {
                     const wb = XLSX.read(fileData, { type: 'array' });
                     const ws = wb.Sheets[wb.SheetNames[0]];
@@ -688,7 +733,6 @@
                     return;
                 }
                 
-                // Image to PDF
                 else if (currentTool === 'image-to-pdf') {
                     const img = new Image();
                     img.onload = async function() {
@@ -720,7 +764,50 @@
                     return;
                 }
                 
-                // ZIP extract
+                // Audio and Video conversions using FFmpeg
+                else if (['mp3-to-wav', 'wav-to-mp3', 'mp3-to-m4a', 'm4a-to-mp3', 'wav-to-m4a', 'm4a-to-wav', 'mp4-to-mov', 'mov-to-mp4', 'mp4-to-avi', 'avi-to-mp4', 'mp4-to-webm', 'webm-to-mp4'].includes(currentTool)) {
+                    await initFFmpeg();
+                    
+                    if (!ffmpegReady) {
+                        showMessage('FFmpeg not ready. Please try again.', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Convert & Download';
+                        return;
+                    }
+                    
+                    const inputName = currentFile.name;
+                    const outputExt = currentTool.split('-to-')[1];
+                    const outputName = currentFile.name.split('.')[0] + '.' + outputExt;
+                    
+                    ffmpeg.writeFile(inputName, new Uint8Array(fileData));
+                    
+                    // Determine codec based on output format
+                    let codecArgs = [];
+                    if (outputExt === 'wav') codecArgs = ['-c:a', 'pcm_s16le'];
+                    else if (outputExt === 'mp3') codecArgs = ['-c:a', 'libmp3lame', '-q:a', '4'];
+                    else if (outputExt === 'm4a') codecArgs = ['-c:a', 'aac', '-q:a', '4'];
+                    else if (outputExt === 'mov') codecArgs = ['-c:v', 'mpeg4', '-q:v', '5'];
+                    else if (outputExt === 'avi') codecArgs = ['-c:v', 'mpeg4', '-q:v', '5'];
+                    else if (outputExt === 'webm') codecArgs = ['-c:v', 'libvpx-vp9', '-crf', '30'];
+                    
+                    await ffmpeg.exec(['-i', inputName, ...codecArgs, outputName]);
+                    const data = ffmpeg.readFile(outputName);
+                    ffmpeg.deleteFile(inputName);
+                    ffmpeg.deleteFile(outputName);
+                    
+                    const mimeTypes = {
+                        'wav': 'audio/wav',
+                        'mp3': 'audio/mpeg',
+                        'm4a': 'audio/mp4',
+                        'mov': 'video/quicktime',
+                        'avi': 'video/x-msvideo',
+                        'webm': 'video/webm'
+                    };
+                    
+                    downloadFile(data, outputName, mimeTypes[outputExt] || 'application/octet-stream');
+                }
+                
+                // ZIP operations
                 else if (currentTool === 'zip-extract') {
                     const zip = new JSZip();
                     await zip.loadAsync(fileData);
@@ -732,7 +819,6 @@
                     return;
                 }
                 
-                // Create ZIP
                 else if (currentTool === 'create-zip') {
                     const zip = new JSZip();
                     zip.file(currentFile.name, fileData);
