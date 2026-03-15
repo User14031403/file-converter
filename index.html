@@ -592,6 +592,90 @@
             margin-bottom: 16px;
             border: 1px solid #bbf7d0;
         }
+
+        .pdf-tools-section {
+            padding: 80px 0;
+        }
+
+        .tools-category {
+            margin-bottom: 64px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .category-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .tool-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .tool-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--foreground);
+        }
+
+        .tool-card.coming-soon {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .tool-card.coming-soon:hover {
+            border-color: var(--border);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .coming-soon-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--accent);
+            color: var(--accent-foreground);
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -701,6 +785,197 @@
                 </div>
             </section>
 
+            <!-- PDF Tools -->
+            <section class="pdf-tools-section">
+                <div class="section-header">
+                    <h2>PDF Tools</h2>
+                    <p>Comprehensive PDF management and conversion tools</p>
+                </div>
+
+                <!-- Organize PDF -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>Organize PDF</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('merge-pdf')">
+                            <div class="tool-icon">📎</div>
+                            <div class="tool-name">Merge PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('split-pdf')">
+                            <div class="tool-icon">✂️</div>
+                            <div class="tool-name">Split PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('remove-pages')">
+                            <div class="tool-icon">🗑️</div>
+                            <div class="tool-name">Remove pages</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('extract-pages')">
+                            <div class="tool-icon">📤</div>
+                            <div class="tool-name">Extract pages</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('organize-pdf')">
+                            <div class="tool-icon">📑</div>
+                            <div class="tool-name">Organize PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('scan-pdf')">
+                            <div class="tool-icon">📸</div>
+                            <div class="tool-name">Scan to PDF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optimize PDF -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>Optimize PDF</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('compress-pdf')">
+                            <div class="tool-icon">📦</div>
+                            <div class="tool-name">Compress PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('repair-pdf')">
+                            <div class="tool-icon">🔧</div>
+                            <div class="tool-name">Repair PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('ocr-pdf')">
+                            <div class="tool-icon">👁️</div>
+                            <div class="tool-name">OCR PDF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convert to PDF -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>Convert to PDF</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('jpg-to-pdf')">
+                            <div class="tool-icon">🖼️</div>
+                            <div class="tool-name">JPG to PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('word-to-pdf')">
+                            <div class="tool-icon">📝</div>
+                            <div class="tool-name">WORD to PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('ppt-to-pdf')">
+                            <div class="tool-icon">📊</div>
+                            <div class="tool-name">POWERPOINT to PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('excel-to-pdf')">
+                            <div class="tool-icon">📈</div>
+                            <div class="tool-name">EXCEL to PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('html-to-pdf')">
+                            <div class="tool-icon">🌐</div>
+                            <div class="tool-name">HTML to PDF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Convert from PDF -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>Convert from PDF</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('pdf-to-jpg')">
+                            <div class="tool-icon">🖼️</div>
+                            <div class="tool-name">PDF to JPG</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-word')">
+                            <div class="tool-icon">📝</div>
+                            <div class="tool-name">PDF to WORD</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-ppt')">
+                            <div class="tool-icon">📊</div>
+                            <div class="tool-name">PDF to POWERPOINT</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-excel')">
+                            <div class="tool-icon">📈</div>
+                            <div class="tool-name">PDF to EXCEL</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('pdf-to-pdfa')">
+                            <div class="tool-icon">📄</div>
+                            <div class="tool-name">PDF to PDF/A</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit PDF -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>Edit PDF</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('rotate-pdf')">
+                            <div class="tool-icon">🔄</div>
+                            <div class="tool-name">Rotate PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('add-page-numbers')">
+                            <div class="tool-icon">🔢</div>
+                            <div class="tool-name">Add page numbers</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('add-watermark')">
+                            <div class="tool-icon">💧</div>
+                            <div class="tool-name">Add watermark</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('crop-pdf')">
+                            <div class="tool-icon">✏️</div>
+                            <div class="tool-name">Crop PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('edit-pdf')">
+                            <div class="tool-icon">✒️</div>
+                            <div class="tool-name">Edit PDF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PDF Security -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>PDF Security</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('unlock-pdf')">
+                            <div class="tool-icon">🔓</div>
+                            <div class="tool-name">Unlock PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('protect-pdf')">
+                            <div class="tool-icon">🔒</div>
+                            <div class="tool-name">Protect PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('sign-pdf')">
+                            <div class="tool-icon">✍️</div>
+                            <div class="tool-name">Sign PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('redact-pdf')">
+                            <div class="tool-icon">🚫</div>
+                            <div class="tool-name">Redact PDF</div>
+                        </div>
+                        <div class="tool-card" onclick="selectTool('compare-pdf')">
+                            <div class="tool-icon">⚖️</div>
+                            <div class="tool-name">Compare PDF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PDF Intelligence -->
+                <div class="tools-category">
+                    <div class="category-header">
+                        <h3>PDF Intelligence</h3>
+                    </div>
+                    <div class="tools-grid">
+                        <div class="tool-card" onclick="selectTool('translate-pdf')">
+                            <div class="tool-icon">🌍</div>
+                            <div class="tool-name">Translate PDF</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- CTA -->
             <div class="cta">
                 <h2>Ready to Convert?</h2>
@@ -741,6 +1016,12 @@
     </footer>
 
     <script>
+        // Select PDF tool and scroll to converter
+        function selectTool(toolName) {
+            showMessage(`${toolName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} feature coming soon!`, 'info');
+            document.querySelector('.converter-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // Navigation - scroll to converter section
         function navigateTo(page) {
             if (page === 'converter') {
