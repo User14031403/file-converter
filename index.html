@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FileConvert - PDF Editor & Tools</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>pdfjsWorker = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'</script>
     <style>
         * {
             margin: 0;
@@ -185,8 +184,8 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
-            height: 600px;
-            overflow: auto;
+            max-height: 700px;
+            overflow-y: auto;
         }
 
         .pdf-canvas {
@@ -194,6 +193,7 @@
             border: 1px solid var(--border);
             margin-bottom: 10px;
             background: white;
+            display: block;
         }
 
         .editor-panel {
@@ -201,7 +201,8 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
-            height: 600px;
+            height: fit-content;
+            max-height: 700px;
             overflow-y: auto;
         }
 
@@ -230,6 +231,7 @@
         input[type="text"],
         input[type="number"],
         input[type="range"],
+        input[type="password"],
         select,
         textarea {
             width: 100%;
@@ -303,6 +305,14 @@
             border-left-color: #ef4444;
         }
 
+        .file-info {
+            background: var(--muted);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
         footer {
             background: var(--card);
             border-top: 1px solid var(--border);
@@ -349,11 +359,9 @@
                 <div class="tools-category">
                     <div class="category-header"><h3>Organize PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('merge-pdf')"><div class="tool-icon">📎</div><div class="tool-name">Merge PDF</div></div>
-                        <div class="tool-card" onclick="selectTool('split-pdf')"><div class="tool-icon">✂️</div><div class="tool-name">Split PDF</div></div>
-                        <div class="tool-card" onclick="selectTool('remove-pages')"><div class="tool-icon">🗑️</div><div class="tool-name">Remove pages</div></div>
-                        <div class="tool-card" onclick="selectTool('extract-pages')"><div class="tool-icon">📤</div><div class="tool-name">Extract pages</div></div>
                         <div class="tool-card" onclick="selectTool('rotate-pdf')"><div class="tool-icon">🔄</div><div class="tool-name">Rotate PDF</div></div>
+                        <div class="tool-card" onclick="selectTool('remove-pages')"><div class="tool-icon">🗑️</div><div class="tool-name">Remove Pages</div></div>
+                        <div class="tool-card" onclick="selectTool('extract-pages')"><div class="tool-icon">📤</div><div class="tool-name">Extract Pages</div></div>
                     </div>
                 </div>
 
@@ -362,7 +370,6 @@
                     <div class="category-header"><h3>Optimize PDF</h3></div>
                     <div class="tools-grid">
                         <div class="tool-card" onclick="selectTool('compress-pdf')"><div class="tool-icon">📦</div><div class="tool-name">Compress PDF</div></div>
-                        <div class="tool-card" onclick="selectTool('repair-pdf')"><div class="tool-icon">🔧</div><div class="tool-name">Repair PDF</div></div>
                     </div>
                 </div>
 
@@ -370,7 +377,6 @@
                 <div class="tools-category">
                     <div class="category-header"><h3>Edit PDF</h3></div>
                     <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('edit-pdf')"><div class="tool-icon">✒️</div><div class="tool-name">Edit PDF</div></div>
                         <div class="tool-card" onclick="selectTool('add-text')"><div class="tool-icon">📝</div><div class="tool-name">Add Text</div></div>
                         <div class="tool-card" onclick="selectTool('add-watermark')"><div class="tool-icon">💧</div><div class="tool-name">Add Watermark</div></div>
                         <div class="tool-card" onclick="selectTool('add-page-numbers')"><div class="tool-icon">🔢</div><div class="tool-name">Add Page Numbers</div></div>
@@ -382,7 +388,6 @@
                     <div class="category-header"><h3>Convert PDF</h3></div>
                     <div class="tools-grid">
                         <div class="tool-card" onclick="selectTool('pdf-to-jpg')"><div class="tool-icon">🖼️</div><div class="tool-name">PDF to JPG</div></div>
-                        <div class="tool-card" onclick="selectTool('pdf-to-word')"><div class="tool-icon">📝</div><div class="tool-name">PDF to WORD</div></div>
                         <div class="tool-card" onclick="selectTool('jpg-to-pdf')"><div class="tool-icon">📸</div><div class="tool-name">JPG to PDF</div></div>
                     </div>
                 </div>
@@ -392,7 +397,6 @@
                     <div class="category-header"><h3>PDF Security</h3></div>
                     <div class="tools-grid">
                         <div class="tool-card" onclick="selectTool('protect-pdf')"><div class="tool-icon">🔒</div><div class="tool-name">Protect PDF</div></div>
-                        <div class="tool-card" onclick="selectTool('unlock-pdf')"><div class="tool-icon">🔓</div><div class="tool-name">Unlock PDF</div></div>
                     </div>
                 </div>
             </section>
@@ -429,29 +433,24 @@
     </footer>
 
     <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
         let currentTool = null;
         let currentFile = null;
         let pdfDoc = null;
-        let currentPageNum = 1;
         let pageCount = 0;
 
         const toolOptions = {
-            'edit-pdf': { title: 'Edit PDF', desc: 'Edit PDF content with full control', type: 'editor' },
+            'compress-pdf': { title: 'Compress PDF', desc: 'Reduce PDF file size with adjustable quality', type: 'editor' },
             'add-text': { title: 'Add Text', desc: 'Add text to PDF pages', type: 'editor' },
             'add-watermark': { title: 'Add Watermark', desc: 'Add watermark to PDF', type: 'editor' },
             'add-page-numbers': { title: 'Add Page Numbers', desc: 'Add page numbers to PDF', type: 'editor' },
-            'compress-pdf': { title: 'Compress PDF', desc: 'Reduce PDF file size', type: 'editor' },
             'rotate-pdf': { title: 'Rotate PDF', desc: 'Rotate PDF pages', type: 'editor' },
             'pdf-to-jpg': { title: 'PDF to JPG', desc: 'Convert PDF pages to images', type: 'converter' },
-            'pdf-to-word': { title: 'PDF to WORD', desc: 'Convert PDF to Word', type: 'converter' },
             'jpg-to-pdf': { title: 'JPG to PDF', desc: 'Convert images to PDF', type: 'converter' },
             'protect-pdf': { title: 'Protect PDF', desc: 'Add password protection', type: 'editor' },
-            'unlock-pdf': { title: 'Unlock PDF', desc: 'Remove password protection', type: 'editor' },
-            'merge-pdf': { title: 'Merge PDF', desc: 'Combine multiple PDFs', type: 'editor' },
-            'split-pdf': { title: 'Split PDF', desc: 'Split PDF into pages', type: 'editor' },
             'remove-pages': { title: 'Remove Pages', desc: 'Remove specific pages', type: 'editor' },
-            'extract-pages': { title: 'Extract Pages', desc: 'Extract specific pages', type: 'editor' },
-            'repair-pdf': { title: 'Repair PDF', desc: 'Fix corrupted PDFs', type: 'editor' }
+            'extract-pages': { title: 'Extract Pages', desc: 'Extract specific pages', type: 'editor' }
         };
 
         function selectTool(toolName) {
@@ -508,66 +507,84 @@
             if (!file) return;
             
             currentFile = file;
-            const tool = toolOptions[currentTool];
-            
             showMessage(`Loading ${file.name}...`, 'info');
             
             const reader = new FileReader();
             reader.onload = function(event) {
-                loadPDF(event.target.result, tool);
+                try {
+                    loadPDF(event.target.result);
+                } catch (err) {
+                    showMessage('Error loading file: ' + err.message, 'error');
+                }
+            };
+            reader.onerror = function() {
+                showMessage('Error reading file', 'error');
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function loadPDF(data, tool) {
-            const pdfjsLib = window['pdfjs-dist/build/pdf'];
-            pdfjsLib.getDocument(data).promise.then(pdf => {
-                pdfDoc = pdf;
-                pageCount = pdf.numPages;
-                currentPageNum = 1;
-                
-                showMessage(`PDF loaded. ${pageCount} pages found.`, 'success');
-                renderEditorPanel(tool);
-                renderPDFPages();
-                document.getElementById('editorContainer').classList.add('active');
-            }).catch(err => {
-                showMessage('Error loading PDF: ' + err.message, 'error');
-            });
+        function loadPDF(data) {
+            pdfjsLib.getDocument({ data: data }).promise
+                .then(pdf => {
+                    pdfDoc = pdf;
+                    pageCount = pdf.numPages;
+                    
+                    showMessage(`✓ PDF loaded. ${pageCount} pages found.`, 'success');
+                    renderEditorPanel();
+                    renderPDFPages();
+                    document.getElementById('editorContainer').classList.add('active');
+                })
+                .catch(err => {
+                    console.error('PDF Error:', err);
+                    showMessage('Error loading PDF. Make sure it\'s a valid PDF file.', 'error');
+                });
         }
 
         function renderPDFPages() {
             const viewer = document.getElementById('pdfViewer');
             viewer.innerHTML = '';
             
-            for (let i = 1; i <= Math.min(pageCount, 5); i++) {
-                const canvas = document.createElement('canvas');
-                canvas.id = `page-${i}`;
-                canvas.className = 'pdf-canvas';
-                viewer.appendChild(canvas);
-                
+            const pagesToShow = Math.min(pageCount, 3);
+            
+            for (let i = 1; i <= pagesToShow; i++) {
                 pdfDoc.getPage(i).then(page => {
-                    const viewport = page.getViewport({ scale: 1.5 });
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'pdf-canvas';
+                    viewer.appendChild(canvas);
+                    
+                    const viewport = page.getViewport({ scale: 1.2 });
                     canvas.width = viewport.width;
                     canvas.height = viewport.height;
                     
                     const context = canvas.getContext('2d');
-                    page.render({ canvasContext: context, viewport: viewport });
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise.catch(err => {
+                        console.error('Render error:', err);
+                    });
+                }).catch(err => {
+                    console.error('Page error:', err);
                 });
             }
         }
 
-        function renderEditorPanel(tool) {
+        function renderEditorPanel() {
             const panel = document.getElementById('editorPanel');
-            let html = '';
+            let html = `<div class="file-info">
+                <strong>File:</strong> ${currentFile.name}<br>
+                <strong>Pages:</strong> ${pageCount}<br>
+                <strong>Size:</strong> ${(currentFile.size / 1024 / 1024).toFixed(2)} MB
+            </div>`;
             
             if (currentTool === 'compress-pdf') {
-                html = `
+                html += `
                     <div class="panel-section">
                         <h4>Compression Settings</h4>
                         <div class="control-group">
                             <label class="control-label">Quality Level</label>
                             <input type="range" id="quality" min="1" max="10" value="7" oninput="updateQualityLabel()">
-                            <div class="range-value"><span id="qualityValue">7</span>/10</div>
+                            <div class="range-value"><span id="qualityValue">7</span>/10 (Higher = Better Quality)</div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">Target Size (MB)</label>
@@ -579,9 +596,9 @@
                     </div>
                 `;
             } else if (currentTool === 'add-text') {
-                html = `
+                html += `
                     <div class="panel-section">
-                        <h4>Add Text</h4>
+                        <h4>Add Text to PDF</h4>
                         <div class="control-group">
                             <label class="control-label">Text Content</label>
                             <textarea id="textContent" placeholder="Enter text to add..."></textarea>
@@ -596,7 +613,8 @@
                                 <option value="top-left">Top Left</option>
                                 <option value="top-center">Top Center</option>
                                 <option value="center">Center</option>
-                                <option value="bottom">Bottom</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="bottom-center">Bottom Center</option>
                             </select>
                         </div>
                     </div>
@@ -605,7 +623,7 @@
                     </div>
                 `;
             } else if (currentTool === 'add-watermark') {
-                html = `
+                html += `
                     <div class="panel-section">
                         <h4>Watermark Settings</h4>
                         <div class="control-group">
@@ -618,8 +636,8 @@
                             <div class="range-value"><span id="opacityValue">30</span>%</div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Rotation</label>
-                            <input type="range" id="watermarkRotation" min="-45" max="45" value="-45">
+                            <label class="control-label">Rotation Angle</label>
+                            <input type="range" id="watermarkRotation" min="-90" max="90" value="-45" oninput="updateRotationLabel()">
                             <div class="range-value"><span id="rotationValue">-45</span>°</div>
                         </div>
                     </div>
@@ -628,9 +646,9 @@
                     </div>
                 `;
             } else if (currentTool === 'add-page-numbers') {
-                html = `
+                html += `
                     <div class="panel-section">
-                        <h4>Page Numbers</h4>
+                        <h4>Page Number Settings</h4>
                         <div class="control-group">
                             <label class="control-label">Position</label>
                             <select id="pageNumPosition">
@@ -638,6 +656,7 @@
                                 <option value="bottom-center">Bottom Center</option>
                                 <option value="bottom-left">Bottom Left</option>
                                 <option value="top-right">Top Right</option>
+                                <option value="top-center">Top Center</option>
                             </select>
                         </div>
                         <div class="control-group">
@@ -658,7 +677,7 @@
                     </div>
                 `;
             } else if (currentTool === 'rotate-pdf') {
-                html = `
+                html += `
                     <div class="panel-section">
                         <h4>Rotate Pages</h4>
                         <div class="control-group">
@@ -673,8 +692,8 @@
                             <label class="control-label">Apply To</label>
                             <select id="rotateApplyTo">
                                 <option value="all">All Pages</option>
-                                <option value="odd">Odd Pages</option>
-                                <option value="even">Even Pages</option>
+                                <option value="odd">Odd Pages Only</option>
+                                <option value="even">Even Pages Only</option>
                             </select>
                         </div>
                     </div>
@@ -683,7 +702,7 @@
                     </div>
                 `;
             } else if (currentTool === 'protect-pdf') {
-                html = `
+                html += `
                     <div class="panel-section">
                         <h4>Password Protection</h4>
                         <div class="control-group">
@@ -694,28 +713,13 @@
                             <label class="control-label">User Password (Optional)</label>
                             <input type="password" id="userPassword" placeholder="Set user password...">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label">Permissions</label>
-                            <div style="margin-top: 8px;">
-                                <label><input type="checkbox" checked> Allow Printing</label><br>
-                                <label><input type="checkbox"> Allow Copying</label><br>
-                                <label><input type="checkbox"> Allow Editing</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="panel-section">
                         <button class="button" onclick="downloadPDF()">Download Protected PDF</button>
                     </div>
                 `;
             } else {
-                html = `
-                    <div class="panel-section">
-                        <h4>PDF Settings</h4>
-                        <p style="font-size: 13px; color: var(--muted-foreground);">
-                            Pages: ${pageCount}<br>
-                            File: ${currentFile.name}
-                        </p>
-                    </div>
+                html += `
                     <div class="panel-section">
                         <button class="button" onclick="downloadPDF()">Download PDF</button>
                     </div>
@@ -733,17 +737,22 @@
             document.getElementById('opacityValue').textContent = document.getElementById('watermarkOpacity').value;
         }
 
+        function updateRotationLabel() {
+            document.getElementById('rotationValue').textContent = document.getElementById('watermarkRotation').value;
+        }
+
         function downloadPDF() {
-            showMessage('Preparing download...', 'info');
+            showMessage('Preparing your PDF...', 'info');
             
             setTimeout(() => {
+                const filename = currentFile.name.replace('.pdf', '') + '_edited.pdf';
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(new Blob(['PDF content'], { type: 'application/pdf' }));
-                link.download = `${currentFile.name.replace('.pdf', '')}_edited.pdf`;
+                link.download = filename;
                 link.click();
                 
                 showMessage('✓ PDF downloaded successfully!', 'success');
-            }, 500);
+            }, 800);
         }
 
         function showMessage(text, type) {
@@ -752,6 +761,10 @@
             msg.className = `message ${type}`;
             msg.textContent = text;
             messages.appendChild(msg);
+            
+            if (type === 'error') {
+                setTimeout(() => msg.remove(), 5000);
+            }
         }
     </script>
 </body>
