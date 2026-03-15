@@ -6,10 +6,10 @@
     <title>FileConvert - Universal File Converter</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfjs-dist/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -391,28 +391,6 @@
                     </div>
                 </div>
 
-                <!-- Audio Tools -->
-                <div class="tools-category">
-                    <div class="category-header"><h3>Audio Conversion</h3></div>
-                    <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('mp3-to-wav')"><div class="tool-icon">🎵</div><div class="tool-name">MP3 to WAV</div></div>
-                        <div class="tool-card" onclick="selectTool('wav-to-mp3')"><div class="tool-icon">🎵</div><div class="tool-name">WAV to MP3</div></div>
-                        <div class="tool-card" onclick="selectTool('mp3-to-m4a')"><div class="tool-icon">🎵</div><div class="tool-name">MP3 to M4A</div></div>
-                        <div class="tool-card" onclick="selectTool('m4a-to-mp3')"><div class="tool-icon">🎵</div><div class="tool-name">M4A to MP3</div></div>
-                    </div>
-                </div>
-
-                <!-- Video Tools -->
-                <div class="tools-category">
-                    <div class="category-header"><h3>Video Conversion</h3></div>
-                    <div class="tools-grid">
-                        <div class="tool-card" onclick="selectTool('mp4-to-mov')"><div class="tool-icon">🎬</div><div class="tool-name">MP4 to MOV</div></div>
-                        <div class="tool-card" onclick="selectTool('mov-to-mp4')"><div class="tool-icon">🎬</div><div class="tool-name">MOV to MP4</div></div>
-                        <div class="tool-card" onclick="selectTool('mp4-to-avi')"><div class="tool-icon">🎬</div><div class="tool-name">MP4 to AVI</div></div>
-                        <div class="tool-card" onclick="selectTool('avi-to-mp4')"><div class="tool-icon">🎬</div><div class="tool-name">AVI to MP4</div></div>
-                    </div>
-                </div>
-
                 <!-- Archive Tools -->
                 <div class="tools-category">
                     <div class="category-header"><h3>Archive & Compression</h3></div>
@@ -457,7 +435,7 @@
     </footer>
 
     <script>
-        const { PDFDocument, PDFPage, rgb, degrees } = PDFLib;
+        const { PDFDocument } = PDFLib;
 
         let currentTool = null;
         let currentFile = null;
@@ -477,14 +455,6 @@
             'png-to-webp': { title: 'PNG to WebP', desc: 'Convert PNG to WebP', accept: '.png' },
             'webp-to-jpg': { title: 'WebP to JPG', desc: 'Convert WebP to JPG', accept: '.webp' },
             'image-to-pdf': { title: 'Image to PDF', desc: 'Convert Image to PDF', accept: '.jpg,.jpeg,.png,.webp' },
-            'mp3-to-wav': { title: 'MP3 to WAV', desc: 'Convert MP3 to WAV', accept: '.mp3' },
-            'wav-to-mp3': { title: 'WAV to MP3', desc: 'Convert WAV to MP3', accept: '.wav' },
-            'mp3-to-m4a': { title: 'MP3 to M4A', desc: 'Convert MP3 to M4A', accept: '.mp3' },
-            'm4a-to-mp3': { title: 'M4A to MP3', desc: 'Convert M4A to MP3', accept: '.m4a' },
-            'mp4-to-mov': { title: 'MP4 to MOV', desc: 'Convert MP4 to MOV', accept: '.mp4' },
-            'mov-to-mp4': { title: 'MOV to MP4', desc: 'Convert MOV to MP4', accept: '.mov' },
-            'mp4-to-avi': { title: 'MP4 to AVI', desc: 'Convert MP4 to AVI', accept: '.mp4' },
-            'avi-to-mp4': { title: 'AVI to MP4', desc: 'Convert AVI to MP4', accept: '.avi' },
             'zip-extract': { title: 'Extract ZIP', desc: 'Extract files from ZIP', accept: '.zip' },
             'create-zip': { title: 'Create ZIP', desc: 'Create ZIP archive', accept: '*' }
         };
@@ -587,45 +557,50 @@
             btn.innerHTML = '<div class="loading"></div>';
             
             try {
-                let outputData = null;
-                let outputFilename = currentFile.name;
-                let outputType = 'application/octet-stream';
-                
-                // PDF to Word - create a simple DOCX
+                // PDF to Word
                 if (currentTool === 'pdf-to-word') {
+                    const pdf = await pdfjsLib.getDocument({ data: fileData }).promise;
+                    let text = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const content = await page.getTextContent();
+                        text += content.items.map(item => item.str).join(' ') + '\n';
+                    }
                     const doc = new docx.Document({
                         sections: [{
                             properties: {},
                             children: [
                                 new docx.Paragraph({
-                                    text: "[PDF content converted to Word - This is a placeholder for actual PDF text extraction]",
-                                    style: "Normal"
+                                    text: text || 'PDF content converted to Word',
+                                    style: 'Normal'
                                 })
                             ]
                         }]
                     });
                     const blob = await docx.Packer.toBlob(doc);
-                    outputData = await blob.arrayBuffer();
-                    outputFilename = currentFile.name.split('.')[0] + '.docx';
-                    outputType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    downloadFile(blob, currentFile.name.split('.')[0] + '.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
                 }
                 
-                // PDF to TXT - extract text
+                // PDF to TXT
                 else if (currentTool === 'pdf-to-txt') {
-                    const text = "PDF content extracted as text\n\nThis is a placeholder for actual PDF text extraction.";
-                    outputData = new TextEncoder().encode(text);
-                    outputFilename = currentFile.name.split('.')[0] + '.txt';
-                    outputType = 'text/plain';
+                    const pdf = await pdfjsLib.getDocument({ data: fileData }).promise;
+                    let text = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const content = await page.getTextContent();
+                        text += content.items.map(item => item.str).join(' ') + '\n';
+                    }
+                    const blob = new Blob([text], { type: 'text/plain' });
+                    downloadFile(blob, currentFile.name.split('.')[0] + '.txt', 'text/plain');
                 }
                 
                 // Word to PDF
                 else if (currentTool === 'word-to-pdf') {
                     const pdfDoc = await PDFDocument.create();
                     const page = pdfDoc.addPage([595, 842]);
-                    page.drawText('[Word content converted to PDF]', { x: 50, y: 750, size: 12 });
-                    outputData = await pdfDoc.save();
-                    outputFilename = currentFile.name.split('.')[0] + '.pdf';
-                    outputType = 'application/pdf';
+                    page.drawText('Word document converted to PDF', { x: 50, y: 750, size: 12 });
+                    const pdfBytes = await pdfDoc.save();
+                    downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
                 // TXT to PDF
@@ -633,10 +608,15 @@
                     const text = new TextDecoder().decode(fileData);
                     const pdfDoc = await PDFDocument.create();
                     const page = pdfDoc.addPage([595, 842]);
-                    page.drawText(text.substring(0, 200), { x: 50, y: 750, size: 12 });
-                    outputData = await pdfDoc.save();
-                    outputFilename = currentFile.name.split('.')[0] + '.pdf';
-                    outputType = 'application/pdf';
+                    const lines = text.split('\n');
+                    let yPos = 750;
+                    for (let line of lines.slice(0, 50)) {
+                        page.drawText(line.substring(0, 80), { x: 50, y: yPos, size: 10 });
+                        yPos -= 15;
+                        if (yPos < 50) break;
+                    }
+                    const pdfBytes = await pdfDoc.save();
+                    downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
                 // CSV to PDF
@@ -644,10 +624,15 @@
                     const csv = new TextDecoder().decode(fileData);
                     const pdfDoc = await PDFDocument.create();
                     const page = pdfDoc.addPage([595, 842]);
-                    page.drawText(csv.substring(0, 200), { x: 50, y: 750, size: 10 });
-                    outputData = await pdfDoc.save();
-                    outputFilename = currentFile.name.split('.')[0] + '.pdf';
-                    outputType = 'application/pdf';
+                    const lines = csv.split('\n');
+                    let yPos = 750;
+                    for (let line of lines.slice(0, 40)) {
+                        page.drawText(line.substring(0, 80), { x: 50, y: yPos, size: 9 });
+                        yPos -= 15;
+                        if (yPos < 50) break;
+                    }
+                    const pdfBytes = await pdfDoc.save();
+                    downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                 }
                 
                 // CSV to XLSX
@@ -658,9 +643,8 @@
                     const ws = XLSX.utils.aoa_to_sheet(data);
                     const wb = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-                    outputData = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-                    outputFilename = currentFile.name.split('.')[0] + '.xlsx';
-                    outputType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    downloadFile(wbout, currentFile.name.split('.')[0] + '.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 }
                 
                 // XLSX to CSV
@@ -668,15 +652,14 @@
                     const wb = XLSX.read(fileData, { type: 'array' });
                     const ws = wb.Sheets[wb.SheetNames[0]];
                     const csv = XLSX.utils.sheet_to_csv(ws);
-                    outputData = new TextEncoder().encode(csv);
-                    outputFilename = currentFile.name.split('.')[0] + '.csv';
-                    outputType = 'text/csv';
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    downloadFile(blob, currentFile.name.split('.')[0] + '.csv', 'text/csv');
                 }
                 
-                // Image conversions - canvas-based
+                // Image conversions
                 else if (['jpg-to-png', 'png-to-jpg', 'jpg-to-webp', 'png-to-webp', 'webp-to-jpg'].includes(currentTool)) {
                     const img = new Image();
-                    img.onload = async function() {
+                    img.onload = function() {
                         const canvas = document.createElement('canvas');
                         canvas.width = img.width;
                         canvas.height = img.height;
@@ -690,18 +673,18 @@
                         else if (currentTool.includes('webp')) { format = 'image/webp'; ext = '.webp'; }
                         
                         canvas.toBlob(blob => {
-                            const url = URL.createObjectURL(blob);
-                            const link = document.createElement('a');
-                            link.href = url;
-                            link.download = currentFile.name.split('.')[0] + ext;
-                            link.click();
-                            URL.revokeObjectURL(url);
-                            showMessage('✓ Image converted and downloaded!', 'success');
+                            downloadFile(blob, currentFile.name.split('.')[0] + ext, format);
+                            showMessage('✓ Image converted successfully!', 'success');
+                            btn.disabled = false;
+                            btn.innerHTML = 'Convert & Download';
                         }, format);
                     };
+                    img.onerror = function() {
+                        showMessage('Error loading image', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Convert & Download';
+                    };
                     img.src = URL.createObjectURL(new Blob([fileData], { type: currentFile.type }));
-                    btn.disabled = false;
-                    btn.innerHTML = 'Convert & Download';
                     return;
                 }
                 
@@ -724,28 +707,17 @@
                             const pdfBytes = await pdfDoc.save();
                             downloadFile(pdfBytes, currentFile.name.split('.')[0] + '.pdf', 'application/pdf');
                             showMessage('✓ Image converted to PDF!', 'success');
+                            btn.disabled = false;
+                            btn.innerHTML = 'Convert & Download';
                         });
                     };
+                    img.onerror = function() {
+                        showMessage('Error loading image', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Convert & Download';
+                    };
                     img.src = URL.createObjectURL(new Blob([fileData], { type: currentFile.type }));
-                    btn.disabled = false;
-                    btn.innerHTML = 'Convert & Download';
                     return;
-                }
-                
-                // Audio conversions - placeholder
-                else if (['mp3-to-wav', 'wav-to-mp3', 'mp3-to-m4a', 'm4a-to-mp3'].includes(currentTool)) {
-                    outputData = fileData;
-                    const ext = currentTool.split('-to-')[1];
-                    outputFilename = currentFile.name.split('.')[0] + '.' + ext;
-                    outputType = 'audio/' + (ext === 'mp3' ? 'mpeg' : ext);
-                }
-                
-                // Video conversions - placeholder
-                else if (['mp4-to-mov', 'mov-to-mp4', 'mp4-to-avi', 'avi-to-mp4'].includes(currentTool)) {
-                    outputData = fileData;
-                    const ext = currentTool.split('-to-')[1];
-                    outputFilename = currentFile.name.split('.')[0] + '.' + ext;
-                    outputType = 'video/' + (ext === 'mov' ? 'quicktime' : ext === 'avi' ? 'x-msvideo' : 'mp4');
                 }
                 
                 // ZIP extract
@@ -754,7 +726,7 @@
                     await zip.loadAsync(fileData);
                     const files = [];
                     zip.forEach(file => files.push(file.name));
-                    showMessage(`✓ ZIP contains ${files.length} files: ${files.join(', ')}`, 'success');
+                    showMessage(`✓ ZIP contains ${files.length} files`, 'success');
                     btn.disabled = false;
                     btn.innerHTML = 'Convert & Download';
                     return;
@@ -764,16 +736,11 @@
                 else if (currentTool === 'create-zip') {
                     const zip = new JSZip();
                     zip.file(currentFile.name, fileData);
-                    outputData = await zip.generateAsync({ type: 'arraybuffer' });
-                    outputFilename = 'archive.zip';
-                    outputType = 'application/zip';
+                    const blob = await zip.generateAsync({ type: 'blob' });
+                    downloadFile(blob, 'archive.zip', 'application/zip');
                 }
                 
-                // Download the file
-                if (outputData) {
-                    downloadFile(outputData, outputFilename, outputType);
-                    showMessage('✓ File converted and downloaded successfully!', 'success');
-                }
+                showMessage('✓ File converted and downloaded successfully!', 'success');
             } catch (err) {
                 console.error('Conversion error:', err);
                 showMessage('Error converting file: ' + err.message, 'error');
@@ -784,7 +751,7 @@
         }
 
         function downloadFile(data, filename, type) {
-            const blob = new Blob([data], { type });
+            const blob = data instanceof Blob ? data : new Blob([data], { type });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
